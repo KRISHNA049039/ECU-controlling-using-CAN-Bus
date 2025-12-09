@@ -73,59 +73,80 @@
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5_
 
 
-- [ ] 4. Implement OBD-II protocol decoder
-  - [ ] 4.1 Create OBD-II Mode 01 parser
+- [x] 4. Implement OBD-II protocol decoder
+
+  - [x] 4.1 Create OBD-II Mode 01 parser
+
+
     - Integrate obd library for standard PID decoding
     - Implement decoders for PIDs: 0x0C (RPM), 0x0D (speed), 0x05 (coolant temp), 0x11 (throttle), 0x2F (fuel level)
     - Apply conversion formulas to produce engineering units
     - Create structured JSON output for each PID
     - _Requirements: 3.1, 3.2, 3.3_
+
   
   - [ ] 4.2 Create OBD-II Mode 03 parser for DTCs
     - Decode stored DTC codes from Mode 03 responses
     - Map DTC codes to human-readable descriptions
+
+
     - _Requirements: 3.4_
   
-  - [ ] 4.3 Implement configurable PID polling
+  - [x] 4.3 Implement configurable PID polling
+
+
     - Create configuration file for PID list and polling intervals
     - Implement polling scheduler with configurable intervals (100ms to 5000ms)
     - _Requirements: 3.5_
+
   
+
+
   - [ ] 4.4 Write unit tests for OBD-II decoder
     - Test PID conversion formulas with known values
     - Test Mode 03 DTC extraction
     - Verify polling interval configuration
+
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
 - [ ] 5. Implement local buffer service with SQLite
   - [ ] 5.1 Create SQLite database schema
     - Write schema for telemetry_buffer table
     - Implement database initialization on service startup
+
     - Add indexes for efficient querying
     - _Requirements: 4.3_
   
   - [ ] 5.2 Implement message batching logic
     - Create batch aggregator with 256KB size limit
     - Implement 5-second time window for batching
+
+
     - Add gzip compression for batches
     - Store compressed batches in SQLite
     - _Requirements: 4.2, 4.5_
   
-  - [ ] 5.3 Implement offline storage and recovery
+  - [x] 5.3 Implement offline storage and recovery
+
+
     - Track buffer utilization with 1GB capacity limit
     - Implement FIFO queue behavior for buffer overflow
     - Create recovery mechanism to transmit stored batches on reconnection
     - Ensure chronological order during recovery
     - _Requirements: 4.3, 4.4_
+
   
   - [ ] 5.4 Write unit tests for buffer service
     - Test batching logic with various message sizes
     - Test offline storage and recovery
     - Verify FIFO behavior at capacity
+
     - _Requirements: 4.2, 4.3, 4.4, 4.5_
 
 
-- [ ] 6. Implement MQTT client service for AWS IoT Core
+- [x] 6. Implement MQTT client service for AWS IoT Core
+
+
   - [ ] 6.1 Create MQTT connection manager
     - Integrate AWS IoT SDK for Python
     - Implement X.509 certificate-based authentication
@@ -157,41 +178,53 @@
     - Verify message publishing
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 7. Integrate edge services into main application
-  - [ ] 7.1 Create main service orchestrator
+- [x] 7. Integrate edge services into main application
+
+  - [x] 7.1 Create main service orchestrator
+
+
     - Write main.py to initialize all services
     - Set up threading for concurrent service execution
     - Implement graceful shutdown handling
     - Add signal handlers for SIGTERM and SIGINT
     - _Requirements: 1.1, 4.1_
   
+
   - [ ] 7.2 Wire services together
     - Connect CAN interface output to protocol decoders
     - Connect decoder output to buffer service
     - Connect buffer service to MQTT client
     - Implement error propagation between services
     - _Requirements: 1.1, 2.1, 3.1, 4.1_
+
   
   - [ ] 7.3 Add configuration management
     - Create YAML configuration file for all service parameters
     - Implement configuration loader with validation
     - Support environment variable overrides
+
     - _Requirements: 1.5, 3.5_
   
   - [ ] 7.4 Write integration tests for edge gateway
     - Test end-to-end flow from CAN to MQTT
     - Test offline buffering and recovery
+
     - Verify error handling across services
+
+
     - _Requirements: 1.1, 2.1, 3.1, 4.1, 4.3, 4.4_
 
 
 - [ ] 8. Set up AWS infrastructure with CDK
-  - [ ] 8.1 Create IoT Core resources
+  - [x] 8.1 Create IoT Core resources
+
+
     - Define CDK stack for IoT Things, certificates, and policies
     - Create Thing Type for vehicles
     - Generate IoT policy allowing publish to vehicle-specific topics
     - Set up certificate provisioning workflow
     - _Requirements: 5.1, 5.2_
+
   
   - [ ] 8.2 Create IoT Rules Engine rules
     - Write rule to route telemetry to Kinesis Firehose
@@ -199,33 +232,44 @@
     - Write rule to route OTA status to Step Functions
     - Configure error handling for rules
     - _Requirements: 5.2, 9.1, 7.1_
+
   
   - [ ] 8.3 Set up S3 buckets
     - Create bucket for raw telemetry with date partitioning
     - Create bucket for OTA logs
     - Create bucket for ML models
     - Configure lifecycle policies (90-day Glacier transition)
+
     - Enable server-side encryption with KMS
+
+
     - _Requirements: 6.1, 6.5_
   
   - [ ] 8.4 Create Kinesis Firehose delivery stream
     - Configure Firehose with 5MB/300s buffering
     - Set up GZIP compression
+
     - Create transformation Lambda for JSON flattening
     - Configure Redshift as destination
     - Set up S3 backup for failed records
     - _Requirements: 6.2_
+
 
 - [ ] 9. Implement ingestion Lambda function
   - [ ] 9.1 Create Lambda handler for telemetry ingestion
     - Write Python Lambda function to receive IoT messages
     - Validate incoming message schema using JSON Schema
     - Enrich messages with metadata (region, ingestion timestamp)
+
+
     - Write raw JSON to S3 with date partitioning
+
+
     - _Requirements: 6.1, 6.2_
   
   - [ ] 9.2 Add CloudWatch metrics emission
     - Emit custom metrics for message count, size, and validation failures
+
     - Log processing errors to CloudWatch Logs
     - _Requirements: 6.1_
   
@@ -234,11 +278,13 @@
     - Test schema validation with valid/invalid messages
     - Test metadata enrichment
     - Verify error handling
+
     - _Requirements: 6.1, 6.2_
 
 
 - [ ] 10. Set up Redshift data warehouse
-  - [ ] 10.1 Create Redshift cluster with CDK
+  - [x] 10.1 Create Redshift cluster with CDK
+
     - Define dc2.large cluster with 2 nodes
     - Configure VPC and security groups
     - Set up master user credentials in Secrets Manager
