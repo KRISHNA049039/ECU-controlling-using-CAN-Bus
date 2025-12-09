@@ -1,0 +1,12 @@
+# AWS CDK Core
+aws-cdk-lib==2.114.1
+constructs>=10.0.0,<11.0.0
+
+# AWS CDK Specific Modules
+aws-cdk.aws-iot==1.204.0
+aws-cdk.aws-iot-actions==1.204.0
+aws-cdk.aws-iot-alpha==2.114.1-alpha.0
+
+# Python Dependencies
+boto3==1.34.19
+botocore==1.34.19

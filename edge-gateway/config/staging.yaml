@@ -1,0 +1,70 @@
+# Staging Environment Configuration
+
+# CAN Bus Configuration
+can:
+  interface: "can0"
+  bitrate: 500000
+  buffer_size: 10000
+  buffer_warning_threshold: 0.8
+
+# Vehicle Configuration
+vehicle:
+  vin: "${VIN}"  # Set via environment variable
+  gateway_id: "${GATEWAY_ID}"
+
+# MQTT Configuration
+mqtt:
+  endpoint: "${AWS_IOT_ENDPOINT}"
+  port: 8883
+  keep_alive: 60
+  qos: 1
+  topics:
+    telemetry: "vehicle/{vin}/telemetry"
+    status: "vehicle/{vin}/status"
+  certificates:
+    ca_cert: "/etc/ecu-diagnostics/certs/AmazonRootCA1.pem"
+    client_cert: "/etc/ecu-diagnostics/certs/device-cert.pem"
+    private_key: "/etc/ecu-diagnostics/certs/device-private-key.pem"
+
+# Buffer Configuration
+buffer:
+  max_size_bytes: 1073741824  # 1 GB
+  batch_size_bytes: 262144  # 256 KB
+  batch_time_window_seconds: 5
+  db_path: "/var/lib/ecu-diagnostics/telemetry_buffer.db"
+
+# OBD-II Configuration
+obd2:
+  enabled: true
+  polling_interval_ms: 1000
+  pids:
+    - name: "engine_rpm"
+      pid: "0x0C"
+      unit: "rpm"
+    - name: "vehicle_speed"
+      pid: "0x0D"
+      unit: "km/h"
+    - name: "coolant_temp"
+      pid: "0x05"
+      unit: "celsius"
+    - name: "throttle_position"
+      pid: "0x11"
+      unit: "percent"
+    - name: "fuel_level"
+      pid: "0x2F"
+      unit: "percent"
+
+# UDS Configuration
+uds:
+  enabled: true
+  ecu_addresses:
+    - "0x7E0"
+    - "0x7E1"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "/var/log/ecu-diagnostics/edge-gateway.log"
+  max_bytes: 10485760  # 10 MB
+  backup_count: 5
