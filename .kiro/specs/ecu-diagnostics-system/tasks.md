@@ -288,27 +288,35 @@
     - Define dc2.large cluster with 2 nodes
     - Configure VPC and security groups
     - Set up master user credentials in Secrets Manager
+
+
     - _Requirements: 6.2_
+
+
   
   - [ ] 10.2 Create database schema
     - Write SQL DDL for dim_vehicles table
     - Write SQL DDL for fact_telemetry table
     - Write SQL DDL for fact_dtcs table
+
     - Write SQL DDL for fact_anomalies table
     - Write SQL DDL for fact_ota_updates table
     - Configure distribution keys and sort keys
     - _Requirements: 6.2, 6.3_
   
+
   - [ ] 10.3 Set up Firehose COPY command integration
     - Configure IAM role for Firehose to Redshift access
     - Create COPY command template for telemetry data
     - Set up automatic table creation if not exists
     - _Requirements: 6.2_
+
   
   - [ ] 10.4 Write data validation queries
     - Create SQL queries to verify data integrity
     - Test COPY command with sample data
     - Verify distribution and sort key effectiveness
+
     - _Requirements: 6.2, 6.3_
 
 - [ ] 11. Implement anomaly detection Lambda function
